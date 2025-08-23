@@ -1,0 +1,25 @@
+
+{
+  "name": "HarmonyX Pro - AI Music Studio",
+  "short_name": "HarmonyX Pro",
+  "description": "World's most advanced AI-powered music studio with mood analysis and neural synthesis",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0118",
+  "theme_color": "#00e5ff",
+  "orientation": "portrait-primary",
+  "categories": ["music", "entertainment", "productivity"],
+  "lang": "en-US",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMGEwMTE4Ii8+CjxjaXJjbGUgY3g9Ijk2IiBjeT0iOTYiIHI9IjgwIiBzdHJva2U9IiMwMGU1ZmYiIHN0cm9rZS13aWR0aD0iNCIvPgo8Y2lyY2xlIGN4PSI5NiIgY3k9Ijk2IiByPSI2MCIgc3Ryb2tlPSIjZmYxNzQ0IiBzdHJva2Utd2lkdGg9IjMiLz4KPGN3Y2xlIGN4PSI5NiIgY3k9Ijk2IiByPSI0MCIgc3Ryb2tlPSIjMDBmZjQxIiBzdHJva2Utd2lkdGg9IjIiLz4KPHN2Zz4K",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSIjMGEwMTE4Ii8+CjxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgcj0iMjAwIiBzdHJva2U9IiMwMGU1ZmYiIHN0cm9rZS13aWR0aD0iOCIvPgo8Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjE1MCIgc3Ryb2tlPSIjZmYxNzQ0IiBzdHJva2Utd2lkdGg9IjYiLz4KPGN3Y2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjEwMCIgc3Ryb2tlPSIjMDBmZjQxIiBzdHJva2Utd2lkdGg9IjQiLz4KPHN2Zz4K",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

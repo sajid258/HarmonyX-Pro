@@ -1,0 +1,2412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HarmonyX Pro | Next-Gen AI Music Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;500;700;900&family=Rajdhani:wght@200;300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0118">
+    <style>
+        /* === Advanced Design System === */
+        :root {
+            --neon-pink: #ff0a78;
+            --neon-blue: #00d4ff;
+            --neon-purple: #8e2de2;
+            --neon-green: #39ff14;
+            --neon-yellow: #ffff00;
+            --neon-orange: #ff4500;
+            --neon-cyan: #00ffff;
+            --electric-blue: #0066ff;
+            --plasma-pink: #ff006e;
+            --cyber-purple: #6a0d83;
+            --hologram-green: #00ff88;
+            --dark-bg: linear-gradient(135deg, #0a0118 0%, #1a0b2e 50%, #16213e 100%);
+            --darker-bg: linear-gradient(135deg, #050010 0%, #0f0520 50%, #1a1a2e 100%);
+            --glass-strong: rgba(255, 255, 255, 0.15);
+            --glass-medium: rgba(255, 255, 255, 0.10);
+            --glass-light: rgba(255, 255, 255, 0.05);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.9);
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --gradient-cyber: linear-gradient(135deg, var(--neon-pink) 0%, var(--electric-blue) 50%, var(--neon-purple) 100%);
+            --gradient-plasma: linear-gradient(135deg, var(--plasma-pink) 0%, var(--neon-cyan) 100%);
+            --gradient-hologram: linear-gradient(135deg, var(--hologram-green) 0%, var(--neon-blue) 100%);
+            --gradient-electric: linear-gradient(135deg, var(--electric-blue) 0%, var(--cyber-purple) 100%);
+            --shadow-intense: 0 0 40px;
+            --shadow-medium: 0 0 25px;
+            --shadow-soft: 0 0 15px;
+            --blur-strong: blur(20px);
+            --blur-medium: blur(15px);
+            --blur-light: blur(10px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            font-size: 14px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Grotesk', 'Rajdhani', 'Orbitron', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+            touch-action: manipulation;
+        }
+
+        /* === Animated Background === */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 10, 120, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(57, 255, 20, 0.1) 0%, transparent 50%),
+                var(--darker-bg);
+            z-index: -2;
+            animation: backgroundFlow 12s ease-in-out infinite alternate;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 212, 255, 0.03) 2px,
+                    rgba(0, 212, 255, 0.03) 4px
+                );
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes backgroundFlow {
+            0% { 
+                transform: translateX(-10px) translateY(-10px) scale(1.02);
+                opacity: 0.8;
+            }
+            100% { 
+                transform: translateX(10px) translateY(10px) scale(0.98);
+                opacity: 1;
+            }
+        }
+
+        /* === App Container === */
+        .app-container {
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* === Futuristic Header === */
+        .app-header {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            background: rgba(10, 1, 24, 0.95);
+            border-bottom: 3px solid transparent;
+            border-image: var(--gradient-cyber) 1;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: var(--blur-strong);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .app-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: var(--gradient-cyber);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px rgba(255, 10, 120, 0.5);
+            animation: titlePulse 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        .app-title::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: var(--gradient-cyber);
+            border-radius: 8px;
+            z-index: -1;
+            opacity: 0.1;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes titleGlow {
+            0% { opacity: 0.1; }
+            100% { opacity: 0.2; }
+        }
+
+        .app-subtitle {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--neon-cyan);
+            margin-bottom: 0.3rem;
+            letter-spacing: 1px;
+        }
+
+        .app-version {
+            font-size: 0.75rem;
+            color: var(--neon-green);
+            font-weight: 600;
+            background: rgba(57, 255, 20, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            display: inline-block;
+            border: 1px solid var(--neon-green);
+        }
+
+        /* === Advanced Glass Panels === */
+        .cyber-panel {
+            background: rgba(10, 1, 24, 0.8);
+            border: 2px solid transparent;
+            border-radius: 20px;
+            backdrop-filter: var(--blur-medium);
+            padding: 1.5rem;
+            margin: 0.8rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .cyber-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-cyber);
+            opacity: 0.1;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .cyber-panel::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-cyber);
+            z-index: 1;
+        }
+
+        .cyber-panel:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 12px 40px rgba(0, 212, 255, 0.2),
+                0 0 30px rgba(255, 10, 120, 0.1);
+        }
+
+        .cyber-panel:hover::before {
+            opacity: 0.15;
+        }
+
+        /* === Revolutionary Tab System === */
+        .tab-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            border: 2px solid transparent;
+            border-image: var(--gradient-plasma) 1;
+            backdrop-filter: var(--blur-light);
+            position: relative;
+        }
+
+        .tab-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient-plasma);
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .tab {
+            padding: 1rem 0.5rem;
+            cursor: pointer;
+            border-radius: 15px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: var(--glass-light);
+            border: 2px solid transparent;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.75rem;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            backdrop-filter: var(--blur-light);
+        }
+
+        .tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .tab:hover::before {
+            left: 100%;
+        }
+
+        .tab:active {
+            transform: scale(0.95);
+        }
+
+        .tab.active {
+            background: var(--gradient-cyber);
+            border: 2px solid var(--neon-pink);
+            box-shadow: 
+                var(--shadow-medium) var(--neon-pink),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            color: white;
+            transform: translateY(-3px);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .tab-emoji {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeInSlide 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeInSlide {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px) scale(0.98); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        /* === Next-Gen Buttons === */
+        .cyber-btn {
+            padding: 1.2rem 1.5rem;
+            border: none;
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            background: var(--gradient-cyber);
+            color: white;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 
+                0 6px 20px rgba(0, 212, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            margin: 0.4rem;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            font-family: 'Orbitron', monospace;
+            min-height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            width: 100%;
+            backdrop-filter: var(--blur-light);
+        }
+
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .cyber-btn:hover::before {
+            left: 100%;
+        }
+
+        .cyber-btn:active {
+            transform: scale(0.96);
+        }
+
+        .cyber-btn:hover {
+            box-shadow: 
+                0 8px 25px var(--neon-blue),
+                0 0 30px rgba(0, 212, 255, 0.4);
+            transform: translateY(-3px);
+            border-color: var(--neon-pink);
+        }
+
+        .cyber-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .cyber-btn.secondary {
+            background: var(--gradient-hologram);
+            border-color: var(--neon-green);
+            box-shadow: 
+                0 6px 20px rgba(57, 255, 20, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .cyber-btn.secondary:hover {
+            box-shadow: 
+                0 8px 25px var(--neon-green),
+                0 0 30px rgba(57, 255, 20, 0.4);
+            border-color: var(--neon-yellow);
+        }
+
+        /* === Enhanced Music Studio Section === */
+        .studio-section {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 5px solid var(--neon-cyan);
+            position: relative;
+            backdrop-filter: var(--blur-medium);
+        }
+
+        .studio-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, var(--neon-cyan) 0%, transparent 70%);
+            opacity: 0.1;
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            background: var(--gradient-plasma);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: var(--gradient-plasma);
+        }
+
+        /* === Advanced Vocalist Cards === */
+        .vocalist-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 2px solid transparent;
+            border-image: var(--gradient-hologram) 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vocalist-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-hologram);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .vocalist-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .vocalist-card {
+            background: var(--glass-medium);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: var(--blur-medium);
+        }
+
+        .vocalist-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-electric);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .vocalist-card:hover::before, .vocalist-card.active::before {
+            opacity: 0.2;
+        }
+
+        .vocalist-card:active {
+            transform: scale(0.95);
+        }
+
+        .vocalist-card:hover, .vocalist-card.active {
+            background: var(--glass-strong);
+            border-color: var(--neon-pink);
+            box-shadow: 
+                var(--shadow-medium) var(--neon-pink),
+                0 0 40px rgba(255, 10, 120, 0.2);
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .vocalist-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .vocalist-name {
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--neon-cyan);
+            margin-bottom: 0.3rem;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 1px;
+        }
+
+        .vocalist-style {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .vocalist-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 0.8rem;
+            font-size: 0.7rem;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.8;
+        }
+
+        .stat-value {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        /* === Language Selection Grid === */
+        .language-section {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 2px solid transparent;
+            border-image: var(--gradient-electric) 1;
+        }
+
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+
+        .language-btn {
+            padding: 1rem;
+            background: var(--glass-light);
+            border: 2px solid var(--neon-green);
+            color: white;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            min-height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            touch-action: manipulation;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: var(--blur-light);
+        }
+
+        .language-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-hologram);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .language-btn:active {
+            transform: scale(0.95);
+        }
+
+        .language-btn:hover, .language-btn.active {
+            background: var(--glass-strong);
+            border-color: var(--neon-yellow);
+            box-shadow: 
+                var(--shadow-soft) var(--neon-green),
+                0 0 20px rgba(57, 255, 20, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .language-btn:hover::before, .language-btn.active::before {
+            opacity: 0.3;
+        }
+
+        .language-flag {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        /* === Advanced Form Elements === */
+        input[type="text"], 
+        input[type="number"], 
+        select, 
+        textarea {
+            width: 100%;
+            background: var(--glass-medium);
+            border: 2px solid var(--neon-blue);
+            border-radius: 15px;
+            padding: 1.2rem;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.4s ease;
+            margin-bottom: 1rem;
+            min-height: 55px;
+            backdrop-filter: var(--blur-light);
+        }
+
+        input:focus, 
+        select:focus, 
+        textarea:focus {
+            outline: none;
+            border-color: var(--neon-pink);
+            box-shadow: 
+                0 0 20px rgba(255, 10, 120, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            background: var(--glass-strong);
+            transform: translateY(-1px);
+        }
+
+        ::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+        }
+
+        /* === Futuristic Sliders === */
+        .control-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.5rem;
+            gap: 0.8rem;
+            background: var(--glass-light);
+            padding: 1.2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .control-label {
+            font-weight: 700;
+            color: var(--neon-blue);
+            font-size: 1rem;
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .control-slider {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .control-slider::-webkit-slider-track {
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue), var(--neon-green));
+            border-radius: 6px;
+        }
+
+        .control-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--gradient-plasma);
+            cursor: pointer;
+            box-shadow: 
+                0 0 15px var(--neon-pink),
+                0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            border: 3px solid white;
+        }
+
+        .control-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 
+                0 0 25px var(--neon-pink),
+                0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .slider-display {
+            text-align: center;
+            background: var(--gradient-cyber);
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            box-shadow: 
+                0 4px 15px rgba(255, 10, 120, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 1px;
+        }
+
+        /* === Enhanced Mood Scanner === */
+        .mood-scanner {
+            width: 100%;
+            height: 250px;
+            border: 3px dashed var(--neon-pink);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            margin: 1.5rem 0;
+            background: 
+                radial-gradient(circle at center, rgba(255, 10, 120, 0.1) 0%, transparent 60%),
+                var(--glass-light);
+            touch-action: manipulation;
+            transition: all 0.4s ease;
+            backdrop-filter: var(--blur-medium);
+        }
+
+        .mood-scanner::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--neon-pink) 0%, transparent 70%);
+            opacity: 0.05;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .mood-scanner.active {
+            border: 3px solid var(--neon-green);
+            box-shadow: 
+                0 0 40px rgba(57, 255, 20, 0.5),
+                inset 0 0 30px rgba(57, 255, 20, 0.1);
+            background: 
+                radial-gradient(circle at center, rgba(57, 255, 20, 0.15) 0%, transparent 60%),
+                var(--glass-medium);
+            animation: scannerActive 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes scannerActive {
+            0% { box-shadow: 0 0 40px rgba(57, 255, 20, 0.5); }
+            100% { box-shadow: 0 0 60px rgba(57, 255, 20, 0.8); }
+        }
+
+        .scanner-content {
+            text-align: center;
+            z-index: 2;
+        }
+
+        .scanner-emoji {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: block;
+            animation: scannerFloat 2s ease-in-out infinite;
+        }
+
+        @keyframes scannerFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .scanner-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .scanner-subtext {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+
+        /* === Progress Bars === */
+        .progress-container {
+            width: 100%;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--gradient-plasma);
+            transition: width 0.5s ease;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(255, 10, 120, 0.5);
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: progressShine 2s ease-in-out infinite;
+        }
+
+        @keyframes progressShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* === Enhanced Notification === */
+        .notification {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            background: rgba(10, 1, 24, 0.95);
+            color: white;
+            padding: 1.2rem 1.5rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--neon-green);
+            box-shadow: 
+                0 8px 32px rgba(0, 255, 65, 0.4),
+                0 0 20px rgba(0, 0, 0, 0.5);
+            transform: translateY(-200%);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 10000;
+            backdrop-filter: var(--blur-strong);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+        }
+
+        .notification.error {
+            border-left-color: var(--neon-pink);
+            box-shadow: 
+                0 8px 32px rgba(255, 10, 120, 0.4),
+                0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .notification.warning {
+            border-left-color: var(--neon-yellow);
+            box-shadow: 
+                0 8px 32px rgba(255, 255, 0, 0.4),
+                0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* === Audio Player === */
+        .player-container {
+            background: var(--glass-medium);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 2px solid var(--neon-cyan);
+            backdrop-filter: var(--blur-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-electric);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .audio-player {
+            width: 100%;
+            height: 60px;
+            border-radius: 15px;
+            background: var(--darker-bg);
+            border: 2px solid var(--neon-blue);
+        }
+
+        .song-info {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--neon-cyan);
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        /* === Loading Spinner === */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--neon-blue);
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* === Responsive Design === */
+        @media (max-width: 768px) {
+            .tab-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.4rem;
+                padding: 0.6rem;
+            }
+
+            .tab {
+                font-size: 0.7rem;
+                padding: 0.8rem 0.4rem;
+                min-height: 50px;
+            }
+
+            .cyber-panel {
+                margin: 0.5rem;
+                padding: 1.2rem;
+            }
+
+            .app-title {
+                font-size: 1.8rem;
+            }
+
+            .vocalist-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .language-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tab-container {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 0.2rem;
+                padding: 0.4rem;
+            }
+
+            .tab {
+                font-size: 0.6rem;
+                padding: 0.6rem 0.2rem;
+                min-height: 45px;
+            }
+
+            .app-title {
+                font-size: 1.6rem;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            .language-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* === Touch Optimization === */
+        @media (hover: none) and (pointer: coarse) {
+            .cyber-btn, .tab, .vocalist-card, .language-btn {
+                min-height: 55px;
+            }
+
+            .control-slider::-webkit-slider-thumb {
+                width: 32px;
+                height: 32px;
+            }
+        }
+
+        /* === Advanced Features Styling === */
+        .emotion-btn, .preset-btn, .emotion-btn {
+            padding: 1rem;
+            background: var(--glass-medium);
+            border: 2px solid var(--neon-purple);
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: var(--blur-light);
+        }
+
+        .emotion-btn:hover, .preset-btn:hover {
+            background: var(--glass-strong);
+            border-color: var(--neon-pink);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 10, 120, 0.3);
+        }
+
+        .upload-zone {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--neon-blue);
+            background: var(--glass-medium);
+        }
+
+        .metric-card, .stat-card {
+            background: var(--glass-light);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feed-item {
+            background: var(--glass-light);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-left: 3px solid var(--neon-cyan);
+        }
+
+        .artist-avatar {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-cyber);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .artist-name {
+            font-weight: 700;
+            color: var(--neon-cyan);
+            margin-bottom: 0.3rem;
+        }
+
+        .track-title {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .feed-stats {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .genome-display {
+            background: var(--glass-light);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--neon-green);
+        }
+
+        .genome-item {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            background: var(--glass-medium);
+            border-radius: 8px;
+            border-left: 3px solid var(--neon-green);
+        }
+
+        .collaborators-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .collaborator-badge {
+            background: var(--glass-medium);
+            padding: 0.8rem 1.2rem;
+            border-radius: 20px;
+            border: 1px solid var(--neon-green);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .online-indicator {
+            color: var(--neon-green);
+            font-size: 0.6rem;
+        }
+
+        .live-control-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .live-btn {
+            padding: 1rem;
+            background: var(--gradient-plasma);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 50px;
+        }
+
+        .live-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 10, 120, 0.4);
+        }
+
+        .challenge-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .challenge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--neon-yellow) 0%, transparent 50%);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        /* === Revolutionary Feature Styling === */
+        .venue-btn, .crystal-btn {
+            padding: 1rem;
+            background: var(--glass-medium);
+            border: 2px solid var(--neon-cyan);
+            color: white;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: var(--blur-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .venue-btn:hover, .crystal-btn:hover {
+            background: var(--glass-strong);
+            border-color: var(--neon-pink);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 10, 120, 0.4);
+        }
+
+        .brain-scanner {
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brain-scanner::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, var(--neon-green) 0%, transparent 70%);
+            opacity: 0.1;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: brainPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes brainPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.1; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.2; }
+        }
+
+        .quantum-particle {
+            background: var(--glass-medium);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quantum-particle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-electric);
+            opacity: 0.05;
+            animation: quantumFlicker 2s ease-in-out infinite;
+        }
+
+        @keyframes quantumFlicker {
+            0%, 100% { opacity: 0.05; }
+            50% { opacity: 0.15; }
+        }
+
+        .crystal-frequency {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crystal-frequency::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: crystalShine 3s ease-in-out infinite;
+        }
+
+        @keyframes crystalShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .metaverse-venues {
+            gap: 0.8rem;
+        }
+
+        .audience-stats {
+            background: linear-gradient(135deg, var(--glass-light) 0%, var(--glass-medium) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .therapy-controls {
+            background: rgba(0, 255, 100, 0.05);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(0, 255, 100, 0.2);
+        }
+
+        .brain-waves .metric-card {
+            background: var(--glass-medium);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brain-waves .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-hologram);
+            opacity: 0.05;
+            animation: brainWaveFlow 2s ease-in-out infinite;
+        }
+
+        @keyframes brainWaveFlow {
+            0%, 100% { opacity: 0.05; transform: translateY(0); }
+            50% { opacity: 0.15; transform: translateY(-5px); }
+        }
+
+        .time-collaborators .collaborator-badge {
+            background: linear-gradient(135deg, var(--glass-medium) 0%, var(--glass-strong) 100%);
+            border: 1px solid var(--neon-yellow);
+            transition: all 0.3s ease;
+        }
+
+        .time-collaborators .collaborator-badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 255, 0, 0.3);
+        }
+
+        .emotion-crystals {
+            gap: 0.8rem;
+        }
+
+        .crystal-btn {
+            background: linear-gradient(135deg, var(--glass-medium) 0%, rgba(255, 0, 150, 0.1) 100%);
+            border-color: var(--neon-pink);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crystal-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.3) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .crystal-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* === Genre Buttons === */
+        .genre-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+
+        .genre-btn {
+            padding: 1.2rem;
+            background: var(--glass-medium);
+            border: 2px solid var(--neon-purple);
+            color: white;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            backdrop-filter: var(--blur-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .genre-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-electric);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .genre-btn:active {
+            transform: scale(0.95);
+        }
+
+        .genre-btn:hover, .genre-btn.active {
+            box-shadow: 
+                var(--shadow-medium) var(--neon-purple),
+                0 0 25px rgba(142, 45, 226, 0.3);
+            border-color: var(--neon-pink);
+            transform: translateY(-2px);
+        }
+
+        .genre-btn:hover::before, .genre-btn.active::before {
+            opacity: 0.3;
+        }
+
+        .genre-btn.active {
+            background: var(--gradient-electric);
+            border-color: var(--neon-pink);
+            box-shadow: 
+                var(--shadow-medium) var(--neon-pink),
+                0 0 30px rgba(255, 10, 120, 0.4);
+        }
+
+        /* === Real-time Controls === */
+        .real-time-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+
+        .mini-btn {
+            padding: 1rem;
+            font-size: 0.75rem;
+            border-radius: 12px;
+            min-height: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* === Advanced Controls Section === */
+        .advanced-controls {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            border-image: var(--gradient-hologram) 1;
+            margin: 1.5rem 0;
+            position: relative;
+            backdrop-filter: var(--blur-medium);
+        }
+
+        .advanced-controls::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-hologram);
+            opacity: 0.03;
+            z-index: -1;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Notification System -->
+    <div class="notification" id="notification">
+        <div id="notification-message"></div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Futuristic Header -->
+        <header class="app-header">
+            <h1 class="app-title">HARMONY<span style="color: var(--neon-green);">X</span> <span style="color: var(--neon-cyan);">PRO</span></h1>
+            <p class="app-subtitle">Next-Generation AI Music Studio</p>
+            <p class="app-version">v7.0.0 ULTRA | Real AI Singers • Multi-Language</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="cyber-panel">
+            <!-- Revolutionary Tab System -->
+            <div class="tab-container">
+                <div class="tab active" data-tab="studio">
+                    <span class="tab-emoji">🎤</span>
+                    <span>Studio</span>
+                </div>
+                <div class="tab" data-tab="vocals">
+                    <span class="tab-emoji">🎵</span>
+                    <span>Vocals</span>
+                </div>
+                <div class="tab" data-tab="mood">
+                    <span class="tab-emoji">🧠</span>
+                    <span>Mood</span>
+                </div>
+                <div class="tab" data-tab="lyrics">
+                    <span class="tab-emoji">📝</span>
+                    <span>Lyrics</span>
+                </div>
+                <div class="tab" data-tab="advanced">
+                    <span class="tab-emoji">🚀</span>
+                    <span>Advanced</span>
+                </div>
+                <div class="tab" data-tab="social">
+                    <span class="tab-emoji">🌐</span>
+                    <span>Social</span>
+                </div>
+            </div>
+
+            <!-- AI Studio Tab -->
+            <div class="tab-content active" id="studio-tab">
+                <div class="studio-section">
+                    <h2 class="section-title">🎧 AI MUSIC STUDIO</h2>
+                    <p style="text-align: center; opacity: 0.9; margin-bottom: 1.5rem; font-size: 1rem; line-height: 1.6;">
+                        Create professional songs with AI vocals in multiple languages. Advanced neural networks power realistic singing voices.
+                    </p>
+
+                    <!-- Enhanced Song Builder -->
+                    <div class="advanced-controls">
+                        <h3 style="color: var(--neon-yellow); margin-bottom: 1.5rem; font-size: 1.2rem; text-align: center; font-family: 'Orbitron', monospace;">🎼 SONG ARCHITECT</h3>
+
+                        <input type="text" id="song-title" placeholder="✨ Enter your song title..." style="margin-bottom: 1rem;">
+
+                        <select id="song-mood" style="margin-bottom: 1rem;">
+                            <option value="uplifting">🌟 Uplifting & Inspirational</option>
+                            <option value="romantic">💕 Romantic & Dreamy</option>
+                            <option value="energetic">⚡ High Energy & Dance</option>
+                            <option value="chill">😌 Chill & Relaxing</option>
+                            <option value="mysterious">🌙 Dark & Mysterious</option>
+                            <option value="epic">🏔️ Epic & Cinematic</option>
+                        </select>
+
+                        <select id="song-duration" style="margin-bottom: 1rem;">
+                            <option value="30">30 seconds (Quick Demo)</option>
+                            <option value="60">1 minute (Short Track)</option>
+                            <option value="120">2 minutes (Standard Song)</option>
+                            <option value="180">3 minutes (Full Production)</option>
+                        </select>
+                    </div>
+
+                    <!-- Enhanced AI Vocalist Selection -->
+                    <div class="vocalist-section">
+                        <h3 class="section-title">🎤 AI VOCAL ARTISTS</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Choose from our advanced AI singers, each with unique vocal characteristics and emotional depth</p>
+
+                        <div class="vocalist-grid" id="vocalist-grid">
+                            <div class="vocalist-card active" data-singer="aria">
+                                <div class="vocalist-emoji">👩‍🎤</div>
+                                <div class="vocalist-name">ARIA</div>
+                                <div class="vocalist-style">Pop Soul Diva</div>
+                                <div class="vocalist-stats">
+                                    <div class="stat">
+                                        <div class="stat-value">9</div>
+                                        <div>Power</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">8</div>
+                                        <div>Emotion</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">7</div>
+                                        <div>Range</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="vocalist-card" data-singer="nova">
+                                <div class="vocalist-emoji">🌟</div>
+                                <div class="vocalist-name">NOVA</div>
+                                <div class="vocalist-style">Electronic Synth</div>
+                                <div class="vocalist-stats">
+                                    <div class="stat">
+                                        <div class="stat-value">7</div>
+                                        <div>Power</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">6</div>
+                                        <div>Emotion</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">9</div>
+                                        <div>Range</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="vocalist-card" data-singer="zen">
+                                <div class="vocalist-emoji">🧘‍♀️</div>
+                                <div class="vocalist-name">ZEN</div>
+                                <div class="vocalist-style">Ambient Mystic</div>
+                                <div class="vocalist-stats">
+                                    <div class="stat">
+                                        <div class="stat-value">5</div>
+                                        <div>Power</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">10</div>
+                                        <div>Emotion</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">6</div>
+                                        <div>Range</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="vocalist-card" data-singer="cyber">
+                                <div class="vocalist-emoji">🤖</div>
+                                <div class="vocalist-name">CYBER</div>
+                                <div class="vocalist-style">Robotic Future</div>
+                                <div class="vocalist-stats">
+                                    <div class="stat">
+                                        <div class="stat-value">9</div>
+                                        <div>Power</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">4</div>
+                                        <div>Emotion</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">8</div>
+                                        <div>Range</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="vocalist-card" data-singer="luna">
+                                <div class="vocalist-emoji">🌙</div>
+                                <div class="vocalist-name">LUNA</div>
+                                <div class="vocalist-style">Classical Opera</div>
+                                <div class="vocalist-stats">
+                                    <div class="stat">
+                                        <div class="stat-value">6</div>
+                                        <div>Power</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">8</div>
+                                        <div>Emotion</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">10</div>
+                                        <div>Range</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="vocalist-card" data-singer="blaze">
+                                <div class="vocalist-emoji">🔥</div>
+                                <div class="vocalist-name">BLAZE</div>
+                                <div class="vocalist-style">Rock Metal</div>
+                                <div class="vocalist-stats">
+                                    <div class="stat">
+                                        <div class="stat-value">10</div>
+                                        <div>Power</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">7</div>
+                                        <div>Emotion</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">8</div>
+                                        <div>Range</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Language Selection -->
+                    <div class="language-section">
+                        <h3 class="section-title">🌍 VOCAL LANGUAGES</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Advanced multilingual AI with authentic pronunciation and cultural nuances</p>
+
+                        <div class="language-grid" id="language-grid">
+                            <div class="language-btn active" data-lang="english">
+                                <span class="language-flag">🇺🇸</span>
+                                <span>English</span>
+                            </div>
+                            <div class="language-btn" data-lang="spanish">
+                                <span class="language-flag">🇪🇸</span>
+                                <span>Spanish</span>
+                            </div>
+                            <div class="language-btn" data-lang="french">
+                                <span class="language-flag">🇫🇷</span>
+                                <span>French</span>
+                            </div>
+                            <div class="language-btn" data-lang="german">
+                                <span class="language-flag">🇩🇪</span>
+                                <span>German</span>
+                            </div>
+                            <div class="language-btn" data-lang="italian">
+                                <span class="language-flag">🇮🇹</span>
+                                <span>Italian</span>
+                            </div>
+                            <div class="language-btn" data-lang="japanese">
+                                <span class="language-flag">🇯🇵</span>
+                                <span>Japanese</span>
+                            </div>
+                            <div class="language-btn" data-lang="korean">
+                                <span class="language-flag">🇰🇷</span>
+                                <span>Korean</span>
+                            </div>
+                            <div class="language-btn" data-lang="chinese">
+                                <span class="language-flag">🇨🇳</span>
+                                <span>Chinese</span>
+                            </div>
+                            <div class="language-btn" data-lang="hindi">
+                                <span class="language-flag">🇮🇳</span>
+                                <span>Hindi</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Audio Controls -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🎛️ AUDIO MASTER CONTROL</h3>
+
+                        <div class="control-row">
+                            <span class="control-label">Tempo (BPM)</span>
+                            <input type="range" id="tempo-slider" class="control-slider" min="60" max="180" value="120">
+                            <span id="tempo-display" class="slider-display">120</span>
+                        </div>
+
+                        <div class="control-row">
+                            <span class="control-label">Vocal Power</span>
+                            <input type="range" id="vocal-power" class="control-slider" min="1" max="10" value="7">
+                            <span id="vocal-power-display" class="slider-display">7</span>
+                        </div>
+
+                        <div class="control-row">
+                            <span class="control-label">Harmony Layers</span>
+                            <input type="range" id="harmony-layers" class="control-slider" min="0" max="5" value="2">
+                            <span id="harmony-display" class="slider-display">2</span>
+                        </div>
+
+                        <div class="control-row">
+                            <span class="control-label">Instrumental Mix</span>
+                            <input type="range" id="instrumental-mix" class="control-slider" min="1" max="10" value="6">
+                            <span id="instrumental-display" class="slider-display">6</span>
+                        </div>
+                    </div>
+
+                    <!-- Real-time Generation Controls -->
+                    <div class="real-time-controls">
+                        <button class="cyber-btn mini-btn secondary" id="preview-vocals">🎤 PREVIEW</button>
+                        <button class="cyber-btn mini-btn secondary" id="test-harmony">🎵 HARMONY</button>
+                    </div>
+
+                    <!-- Primary Controls -->
+                    <div class="music-controls">
+                        <button class="cyber-btn" id="generate-song">🚀 GENERATE MASTERPIECE</button>
+                        <button class="cyber-btn" id="play-song">▶️ PLAY SONG</button>
+                        <button class="cyber-btn" id="stop-song">⏹️ STOP</button>
+                        <button class="cyber-btn secondary" id="download-song">💾 DOWNLOAD</button>
+                    </div>
+
+                    <!-- Enhanced Audio Player -->
+                    <div class="player-container" id="player-container" style="display: none;">
+                        <audio id="audio-player" class="audio-player" controls></audio>
+                        <div id="song-info" class="song-info"></div>
+                    </div>
+
+                    <!-- === REVOLUTIONARY ADVANCED FEATURES === -->
+
+                    <!-- AI Holographic Composer -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🤖 AI HOLOGRAPHIC COMPOSER ENGINE</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Neural networks with quantum entanglement compose symphonies across dimensions</p>
+
+                        <input type="text" id="composition-prompt" placeholder="🎼 Describe your musical vision (e.g., 'Epic orchestral piece for a movie trailer')" style="margin-bottom: 1rem;">
+
+                        <select id="composition-complexity" style="margin-bottom: 1rem;">
+                            <option value="3">🎵 Simple Arrangement</option>
+                            <option value="5">🎼 Standard Composition</option>
+                            <option value="7">🎭 Complex Symphony</option>
+                            <option value="10">🌟 Masterpiece Level</option>
+                            <option value="15">🚀 Galactic Epic</option>
+                            <option value="20">🌌 Universe Creation</option>
+                        </select>
+
+                        <div class="real-time-controls">
+                            <button class="cyber-btn mini-btn" id="ai-compose">🤖 AI COMPOSE</button>
+                            <button class="cyber-btn mini-btn secondary" id="analyze-genome">🧬 MUSIC DNA</button>
+                            <button class="cyber-btn mini-btn" id="hologram-mode">🔮 HOLOGRAM</button>
+                            <button class="cyber-btn mini-btn secondary" id="time-travel-composition">⏰ TIME TRAVEL</button>
+                        </div>
+
+                        <div id="genome-analysis" class="genome-display" style="display: none; margin-top: 1rem;"></div>
+                    </div>
+
+                    <!-- Voice Enhancement Tools -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🎤 VOCAL ENHANCEMENT SUITE</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Professional vocal processing and enhancement tools</p>
+
+                        <div class="vocal-controls" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; margin-bottom: 1rem;">
+                            <div class="control-row">
+                                <span class="control-label">Vocal Clarity</span>
+                                <input type="range" id="clarity-level" class="control-slider" min="0" max="10" value="5">
+                                <span id="clarity-display" class="slider-display">5</span>
+                            </div>
+                            <div class="control-row">
+                                <span class="control-label">Warmth</span>
+                                <input type="range" id="warmth-level" class="control-slider" min="0" max="10" value="6">
+                                <span id="warmth-display" class="slider-display">6</span>
+                            </div>
+                        </div>
+
+                        <div class="real-time-controls">
+                            <button class="cyber-btn mini-btn" id="enhance-vocals">✨ ENHANCE</button>
+                            <button class="cyber-btn mini-btn secondary" id="vocal-effects">🎚️ EFFECTS</button>
+                        </div>
+                    </div>
+
+                    <!-- Audio Mixing Tools -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🎚️ PROFESSIONAL MIXING SUITE</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Advanced mixing and mastering tools for professional results</p>
+
+                        <div class="mixing-controls" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; margin-bottom: 1rem;">
+                            <div class="control-row">
+                                <span class="control-label">Bass</span>
+                                <input type="range" id="bass-level" class="control-slider" min="-10" max="10" value="0">
+                                <span id="bass-display" class="slider-display">0</span>
+                            </div>
+                            <div class="control-row">
+                                <span class="control-label">Treble</span>
+                                <input type="range" id="treble-level" class="control-slider" min="-10" max="10" value="0">
+                                <span id="treble-display" class="slider-display">0</span>
+                            </div>
+                        </div>
+
+                        <div class="real-time-controls">
+                            <button class="cyber-btn mini-btn" id="auto-eq">🎛️ AUTO EQ</button>
+                            <button class="cyber-btn mini-btn secondary" id="stereo-enhance">🎧 STEREO+</button>
+                        </div>
+                    </div>
+
+                    <!-- AI Music Therapist -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🏥 AI MUSIC THERAPIST</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Therapeutic music compositions for healing and wellness</p>
+
+                        <select id="therapy-type" style="margin-bottom: 1rem;">
+                            <option value="anxiety">😌 Anxiety Relief</option>
+                            <option value="depression">🌅 Depression Support</option>
+                            <option value="focus">🎯 ADHD Focus</option>
+                            <option value="sleep">😴 Sleep Therapy</option>
+                            <option value="pain">💊 Pain Management</option>
+                            <option value="memory">🧠 Memory Enhancement</option>
+                        </select>
+
+                        <div class="therapy-controls">
+                            <div class="control-row">
+                                <span class="control-label">Healing Frequency</span>
+                                <input type="range" id="healing-freq" class="control-slider" min="40" max="1000" value="528">
+                                <span id="freq-display" class="slider-display">528 Hz</span>
+                            </div>
+                        </div>
+
+                        <div class="real-time-controls">
+                            <button class="cyber-btn mini-btn" id="generate-therapy">💊 HEALING MUSIC</button>
+                            <button class="cyber-btn mini-btn secondary" id="binaural-beats">🧘 BINAURAL BEATS</button>
+                        </div>
+                    </div>
+
+                    <!-- Music Analysis Tools -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🎼 MUSIC ANALYSIS SUITE</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Advanced tools for analyzing and understanding your music</p>
+
+                        <div class="analysis-display" style="background: var(--glass-light); padding: 1.5rem; border-radius: 15px; margin-bottom: 1rem;">
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                                <div class="analysis-item">
+                                    <div style="font-size: 1.5rem;">🥁</div>
+                                    <div>Tempo</div>
+                                    <div style="color: var(--neon-blue);" id="detected-tempo">-- BPM</div>
+                                </div>
+                                <div class="analysis-item">
+                                    <div style="font-size: 1.5rem;">🎵</div>
+                                    <div>Key</div>
+                                    <div style="color: var(--neon-green);" id="detected-key">-- Major</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="real-time-controls">
+                            <button class="cyber-btn mini-btn" id="tempo-detect">🥁 DETECT TEMPO</button>
+                            <button class="cyber-btn mini-btn secondary" id="chord-analyze">🎼 ANALYZE CHORDS</button>
+                        </div>
+                    </div>
+
+                    <!-- Time Machine Music Studio -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">⏰ TIME MACHINE MUSIC STUDIO</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Collaborate with legendary musicians across time</p>
+
+                        <select id="time-period" style="margin-bottom: 1rem;">
+                            <option value="baroque">🎼 Baroque Era (Bach)</option>
+                            <option value="classical">🎹 Classical (Mozart)</option>
+                            <option value="romantic">💕 Romantic (Chopin)</option>
+                            <option value="jazz">🎷 Jazz Age (Armstrong)</option>
+                            <option value="rock">🎸 Rock Era (Beatles)</option>
+                            <option value="future">🚀 Future (AI Musicians)</option>
+                        </select>
+
+                        <div class="time-collaborators" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 1rem;">
+                            <div class="collaborator-badge">🎼 Bach</div>
+                            <div class="collaborator-badge">🎹 Mozart</div>
+                            <div class="collaborator-badge">🎺 Miles</div>
+                        </div>
+
+                        <div class="real-time-controls">
+                            <button class="cyber-btn mini-btn" id="time-travel">⏰ TIME TRAVEL</button>
+                            <button class="cyber-btn mini-btn secondary" id="historical-collab">👥 COLLAB</button>
+                        </div>
+                    </div>
+
+                    <!-- Reverb & Effects -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🌊 REVERB & EFFECTS STUDIO</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Professional reverb and effect processing for spatial audio</p>
+
+                        <div class="effect-presets" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 1rem;">
+                            <button class="preset-btn" data-reverb="hall">🏛️ Concert Hall</button>
+                            <button class="preset-btn" data-reverb="room">🏠 Studio Room</button>
+                            <button class="preset-btn" data-reverb="cathedral">⛪ Cathedral</button>
+                        </div>
+
+                        <div class="reverb-controls" style="background: var(--glass-light); padding: 1rem; border-radius: 15px; margin-bottom: 1rem;">
+                            <div>Reverb Time: <span id="reverb-time" style="color: var(--neon-green);">2.4s</span></div>
+                            <div>Room Size: <span id="room-size" style="color: var(--neon-blue);">Medium</span></div>
+                        </div>
+
+                        <button class="cyber-btn" id="apply-reverb">🌊 APPLY REVERB</button>
+                    </div>
+
+                    <!-- Voice Cloning Studio -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🧬 VOICE CLONING LAB</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Clone any voice with just 30 seconds of audio</p>
+
+                        <div class="upload-zone" id="voice-upload" style="border: 2px dashed var(--neon-green); padding: 2rem; text-align: center; border-radius: 15px; margin-bottom: 1rem;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎤</div>
+                            <div>Upload voice sample or record</div>
+                            <div style="font-size: 0.8rem; opacity: 0.7;">Minimum 30 seconds for optimal cloning</div>
+                        </div>
+
+                        <div class="real-time-controls">
+                            <button class="cyber-btn mini-btn" id="record-voice">🎙️ RECORD</button>
+                            <button class="cyber-btn mini-btn secondary" id="clone-voice">🧬 CLONE</button>
+                        </div>
+                    </div>
+
+                    <!-- Real-time Collaboration -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🌐 LIVE COLLABORATION STUDIO</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Create music together in real-time with global artists</p>
+
+                        <div class="collaboration-status" style="background: var(--glass-light); padding: 1rem; border-radius: 15px; margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>🌐 Session Status:</span>
+                                <span id="collab-status" style="color: var(--neon-green);">Ready to Connect</span>
+                            </div>
+                        </div>
+
+                        <div id="collaborators-list" class="collaborators-container" style="margin-bottom: 1rem;"></div>
+
+                        <div class="real-time-controls">
+                            <button class="cyber-btn mini-btn" id="start-collaboration">🚀 START SESSION</button>
+                            <button class="cyber-btn mini-btn secondary" id="join-session">🔗 JOIN SESSION</button>
+                        </div>
+                    </div>
+
+                    <!-- Live Performance Mode -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🎤 LIVE PERFORMANCE ENGINE</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Professional live performance with crowd interaction</p>
+
+                        <div class="performance-metrics" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+                            <div class="metric-card">
+                                <div style="font-size: 1.5rem;">⚡</div>
+                                <div style="font-size: 0.8rem;">Energy</div>
+                                <div style="color: var(--neon-green);">85%</div>
+                            </div>
+                            <div class="metric-card">
+                                <div style="font-size: 1.5rem;">👥</div>
+                                <div style="font-size: 0.8rem;">Crowd</div>
+                                <div style="color: var(--neon-blue);">9.2/10</div>
+                            </div>
+                            <div class="metric-card">
+                                <div style="font-size: 1.5rem;">🎵</div>
+                                <div style="font-size: 0.8rem;">Sync</div>
+                                <div style="color: var(--neon-pink);">Perfect</div>
+                            </div>
+                        </div>
+
+                        <div id="live-controls" style="display: none;"></div>
+
+                        <div class="real-time-controls">
+                            <button class="cyber-btn mini-btn" id="start-live">🔥 GO LIVE</button>
+                            <button class="cyber-btn mini-btn secondary" id="crowd-analytics">📊 ANALYTICS</button>
+                        </div>
+                    </div>
+
+                    <!-- Smart Mastering Engine -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🎚️ AI MASTERING SUITE</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Grammy-level mastering powered by machine learning</p>
+
+                        <div class="mastering-presets" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; margin-bottom: 1rem;">
+                            <button class="preset-btn" data-preset="radio">📻 Radio Ready</button>
+                            <button class="preset-btn" data-preset="streaming">🎧 Streaming</button>
+                            <button class="preset-btn" data-preset="vinyl">💿 Vinyl Master</button>
+                            <button class="preset-btn" data-preset="club">🕺 Club Banger</button>
+                        </div>
+
+                        <div class="mastering-progress" id="mastering-progress" style="display: none;">
+                            <div class="progress-container">
+                                <div class="progress-bar" id="mastering-bar"></div>
+                            </div>
+                        </div>
+
+                        <div class="real-time-controls">
+                            <button class="cyber-btn mini-btn" id="auto-master">✨ AUTO MASTER</button>
+                            <button class="cyber-btn mini-btn secondary" id="custom-master">🎛️ CUSTOM</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Vocals Tab -->
+            <div class="tab-content" id="vocals-tab">
+                <div class="studio-section">
+                    <h2 class="section-title">🎵 VOCAL MASTERY STUDIO</h2>
+                    <p style="text-align: center; opacity: 0.9; margin-bottom: 1.5rem; font-size: 1rem;">
+                        Advanced vocal processing with AI-powered effects and real-time enhancement
+                    </p>
+
+                    <!-- Vocal Styles -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🎭 VOCAL STYLES</h3>
+                        <div class="genre-selector">
+                            <button class="genre-btn active" data-style="pop">🎤 Pop</button>
+                            <button class="genre-btn" data-style="rock">🤘 Rock</button>
+                            <button class="genre-btn" data-style="jazz">🎷 Jazz</button>
+                            <button class="genre-btn" data-style="classical">🎼 Classical</button>
+                            <button class="genre-btn" data-style="rap">🎵 Rap</button>
+                            <button class="genre-btn" data-style="opera">🎭 Opera</button>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Vocal Effects -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🎚️ VOCAL EFFECTS SUITE</h3>
+
+                        <div class="control-row">
+                            <span class="control-label">Studio Reverb</span>
+                            <input type="range" id="reverb-level" class="control-slider" min="0" max="10" value="4">
+                            <span id="reverb-display" class="slider-display">4</span>
+                        </div>
+
+                        <div class="control-row">
+                            <span class="control-label">AI Auto-Tune</span>
+                            <input type="range" id="autotune-level" class="control-slider" min="0" max="10" value="3">
+                            <span id="autotune-display" class="slider-display">3</span>
+                        </div>
+
+                        <div class="control-row">
+                            <span class="control-label">Emotional Depth</span>
+                            <input type="range" id="emotion-level" class="control-slider" min="1" max="10" value="7">
+                            <span id="emotion-display" class="slider-display">7</span>
+                        </div>
+                    </div>
+
+                    <!-- Vocal Controls -->
+                    <div class="music-controls">
+                        <button class="cyber-btn secondary" id="record-vocals">🎙️ GUIDE VOCALS</button>
+                        <button class="cyber-btn" id="train-ai-voice">🤖 AI TRAINING</button>
+                        <button class="cyber-btn secondary" id="vocal-warmup">🎵 VOICE WARMUP</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Mood Tab -->
+            <div class="tab-content" id="mood-tab">
+                <div class="studio-section">
+                    <h2 class="section-title">🧠 AI EMOTION SCANNER</h2>
+                    <p style="text-align: center; opacity: 0.9; margin-bottom: 1.5rem; font-size: 1rem;">
+                        Advanced neural emotion detection and mood analysis for perfect song matching
+                    </p>
+
+                    <!-- Enhanced Mood Scanner -->
+                    <div class="mood-scanner" id="mood-scanner">
+                        <div class="scanner-content" id="scanner-placeholder">
+                            <div class="scanner-emoji">🧠</div>
+                            <div class="scanner-text">EMOTION ENGINE READY</div>
+                            <div class="scanner-subtext">Neural emotion detection system</div>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Progress Display -->
+                    <div style="margin: 1.5rem 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600; color: var(--neon-cyan); font-size: 1rem;">Emotion Intensity:</span>
+                            <span id="intensity-value" style="font-weight: 800; color: var(--neon-pink); font-size: 1.2rem;">50%</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="intensity-level" style="width: 50%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Mood Controls -->
+                    <div class="music-controls">
+                        <button class="cyber-btn" id="scan-btn">🚀 SCAN EMOTION</button>
+                        <button class="cyber-btn secondary" id="voice-btn">🎤 VOICE ANALYSIS</button>
+                        <button class="cyber-btn" id="auto-mood">⚡ AUTO MODE</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Lyrics Tab -->
+            <div class="tab-content" id="lyrics-tab">
+                <div class="studio-section">
+                    <h2 class="section-title">📝 AI LYRICS ENGINE</h2>
+                    <p style="text-align: center; opacity: 0.9; margin-bottom: 1.5rem; font-size: 1rem;">
+                        Neural-powered lyric generation with cultural context and emotional intelligence
+                    </p>
+
+                    <!-- Lyrics Input -->
+                    <div class="advanced-controls">
+                        <input type="text" id="lyric-theme" placeholder="✨ Enter theme (love, dreams, adventure...)" style="margin-bottom: 1rem;">
+
+                        <select id="lyric-style" style="margin-bottom: 1rem;">
+                            <option value="pop">🎭 Modern Pop Style</option>
+                            <option value="rap">🎤 Hip-Hop Rap Style</option>
+                            <option value="ballad">💕 Romantic Ballad</option>
+                            <option value="rock">🤘 Rock Anthem</option>
+                            <option value="country">🤠 Country Narrative</option>
+                            <option value="electronic">🔮 Electronic Vibes</option>
+                        </select>
+                    </div>
+
+                    <!-- Lyrics Controls -->
+                    <div class="music-controls">
+                        <button class="cyber-btn" id="generate-lyrics">✨ GENERATE LYRICS</button>
+                        <button class="cyber-btn secondary" id="enhance-lyrics">🚀 AI ENHANCE</button>
+                    </div>
+
+                    <!-- Enhanced Lyrics Output -->
+                    <div class="advanced-controls">
+                        <textarea id="lyrics-output" placeholder="🎵 AI-generated lyrics will appear here with perfect rhyme schemes and emotional depth..." 
+                                  style="min-height: 250px; margin: 1rem 0; font-size: 1rem; line-height: 1.6; font-family: 'Space Grotesk', sans-serif;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === ADVANCED FEATURES TAB === -->
+            <div class="tab-content" id="advanced-tab">
+                <div class="studio-section">
+                    <h2 class="section-title">🚀 ADVANCED AI LABORATORY</h2>
+                    <p style="text-align: center; opacity: 0.9; margin-bottom: 1.5rem; font-size: 1rem;">
+                        Cutting-edge music technology that pushes the boundaries of what's possible
+                    </p>
+
+                    <!-- Emotion-Driven Composition -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🎭 EMOTIONAL JOURNEY COMPOSER</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Create songs that evolve through different emotions</p>
+
+                        <div class="emotion-selector" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 1rem;">
+                            <button class="emotion-btn" data-emotion="happy">😊 Happy</button>
+                            <button class="emotion-btn" data-emotion="sad">😢 Melancholy</button>
+                            <button class="emotion-btn" data-emotion="energetic">⚡ Energetic</button>
+                            <button class="emotion-btn" data-emotion="peaceful">🧘 Peaceful</button>
+                            <button class="emotion-btn" data-emotion="mysterious">🌙 Mysterious</button>
+                            <button class="emotion-btn" data-emotion="romantic">💕 Romantic</button>
+                        </div>
+
+                        <button class="cyber-btn" id="create-emotional-journey">🌈 CREATE EMOTIONAL JOURNEY</button>
+                    </div>
+
+                    <!-- Neural Voice Training -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🧠 NEURAL VOICE TRAINING</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Train custom AI voices with advanced deep learning</p>
+
+                        <div class="training-status" style="background: var(--glass-light); padding: 1rem; border-radius: 15px; margin-bottom: 1rem;">
+                            <div>Training Progress: <span id="training-progress">0%</span></div>
+                            <div class="progress-container" style="margin-top: 0.5rem;">
+                                <div class="progress-bar" id="training-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="real-time-controls">
+                            <button class="cyber-btn mini-btn" id="start-training">🚀 START TRAINING</button>
+                            <button class="cyber-btn mini-btn secondary" id="load-pretrained">📁 LOAD MODEL</button>
+                        </div>
+                    </div>
+
+                    <!-- 3D Audio Spatial Engine -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🌍 3D SPATIAL AUDIO ENGINE</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Immersive 360° audio experiences</p>
+
+                        <div class="spatial-controls" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1rem;">
+                            <div class="control-row">
+                                <span class="control-label">Depth</span>
+                                <input type="range" id="spatial-depth" class="control-slider" min="0" max="100" value="50">
+                                <span id="depth-display" class="slider-display">50</span>
+                            </div>
+                            <div class="control-row">
+                                <span class="control-label">Width</span>
+                                <input type="range" id="spatial-width" class="control-slider" min="0" max="100" value="70">
+                                <span id="width-display" class="slider-display">70</span>
+                            </div>
+                        </div>
+
+                        <button class="cyber-btn" id="enable-3d-audio">🎧 ENABLE 3D AUDIO</button>
+                    </div>
+
+                    <!-- Quantum Harmony Generator -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">⚛️ QUANTUM HARMONY GENERATOR</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Quantum-inspired harmony generation using superposition principles</p>
+
+                        <div class="quantum-display" style="background: var(--glass-light); padding: 1.5rem; border-radius: 15px; margin-bottom: 1rem; text-align: center;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚛️</div>
+                            <div>Quantum State: <span id="quantum-state" style="color: var(--neon-green);">Superposition</span></div>
+                            <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.5rem;">Probability amplitude: 0.707</div>
+                        </div>
+
+                        <button class="cyber-btn" id="quantum-generate">🌌 QUANTUM GENERATE</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === SOCIAL MUSIC NETWORK TAB === -->
+            <div class="tab-content" id="social-tab">
+                <div class="studio-section">
+                    <h2 class="section-title">🌐 SOCIAL MUSIC METAVERSE</h2>
+                    <p style="text-align: center; opacity: 0.9; margin-bottom: 1.5rem; font-size: 1rem;">
+                        Connect, collaborate, and share with the global music community
+                    </p>
+
+                    <!-- Music Feed -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🎵 GLOBAL MUSIC FEED</h3>
+                        <div class="music-feed" id="music-feed" style="max-height: 300px; overflow-y: auto;">
+                            <div class="feed-item">
+                                <div class="artist-avatar">🎤</div>
+                                <div class="feed-content">
+                                    <div class="artist-name">@ProducerAlex</div>
+                                    <div class="track-title">"Neon Dreams" - Cyberpunk Anthem</div>
+                                    <div class="feed-stats">❤️ 1.2K 🔄 234 💬 89</div>
+                                </div>
+                            </div>
+                            <div class="feed-item">
+                                <div class="artist-avatar">🎭</div>
+                                <div class="feed-content">
+                                    <div class="artist-name">@VocalMaya</div>
+                                    <div class="track-title">"Ocean's Whisper" - Ambient Journey</div>
+                                    <div class="feed-stats">❤️ 892 🔄 156 💬 43</div>
+                                </div>
+                            </div>
+                            <div class="feed-item">
+                                <div class="artist-avatar">🎸</div>
+                                <div class="feed-content">
+                                    <div class="artist-name">@RockStarZen</div>
+                                    <div class="track-title">"Thunder Strike" - Epic Rock</div>
+                                    <div class="feed-stats">❤️ 2.1K 🔄 567 💬 123</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Streaming Studio -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">📺 LIVE STREAMING STUDIO</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Stream your music creation process live to fans worldwide</p>
+
+                        <div class="stream-status" style="background: var(--glass-light); padding: 1rem; border-radius: 15px; margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>🔴 Stream Status:</span>
+                                <span id="stream-status" style="color: var(--neon-pink);">Offline</span>
+                            </div>
+                            <div style="margin-top: 0.5rem;">Viewers: <span id="viewer-count">0</span></div>
+                        </div>
+
+                        <div class="real-time-controls">
+                            <button class="cyber-btn mini-btn" id="start-stream">🎬 GO LIVE</button>
+                            <button class="cyber-btn mini-btn secondary" id="schedule-stream">📅 SCHEDULE</button>
+                        </div>
+                    </div>
+
+                    <!-- Community Challenges -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🏆 MUSIC CHALLENGES</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Participate in weekly music creation challenges</p>
+
+                        <div class="challenge-card" style="background: var(--glass-light); padding: 1.5rem; border-radius: 15px; margin-bottom: 1rem; border-left: 4px solid var(--neon-yellow);">
+                            <div style="font-weight: 700; margin-bottom: 0.5rem;">🌟 This Week's Challenge</div>
+                            <div style="margin-bottom: 0.5rem;">"Create a 60-second song using only AI vocals"</div>
+                            <div style="font-size: 0.8rem; opacity: 0.7;">Ends in 3 days • 1,247 participants</div>
+                        </div>
+
+                        <button class="cyber-btn" id="join-challenge">🚀 JOIN CHALLENGE</button>
+                    </div>
+
+                    <!-- Enhanced Community Features -->
+                    <div class="advanced-controls">
+                        <h3 class="section-title">🌟 COMMUNITY HUB</h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Connect with musicians worldwide and showcase your creations</p>
+
+                        <div class="community-stats" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+                            <div class="metric-card">
+                                <div style="font-size: 1.5rem;">🎵</div>
+                                <div style="font-size: 0.8rem;">Your Tracks</div>
+                                <div style="color: var(--neon-green);">24</div>
+                            </div>
+                            <div class="metric-card">
+                                <div style="font-size: 1.5rem;">👥</div>
+                                <div style="font-size: 0.8rem;">Followers</div>
+                                <div style="color: var(--neon-cyan);">1.2K</div>
+                            </div>
+                            <div class="metric-card">
+                                <div style="font-size: 1.5rem;">🔥</div>
+                                <div style="font-size: 0.8rem;">Trending</div>
+                                <div style="color: var(--neon-pink);">#3</div>
+                            </div>
+                        </div>
+
+                        <div class="real-time-controls">
+                            <button class="cyber-btn mini-btn" id="share-track">📤 SHARE TRACK</button>
+                            <button class="cyber-btn mini-btn secondary" id="explore-community">🌍 EXPLORE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
